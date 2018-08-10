@@ -31,7 +31,7 @@ namespace Actions
         {
             List<DFtpFile> found = new List<DFtpFile>();
             GetFilesForDirectory(Directory.GetFiles(this.startPath), ref found, true);
-            GetFilesForDirectory(Directory.GetFiles(this.startPath), ref found, false);
+            GetFilesForDirectory(Directory.GetDirectories(this.startPath), ref found, false);
 
             List<DFtpFile> filtered = new List<DFtpFile>();
             foreach (DFtpFile item in found)
