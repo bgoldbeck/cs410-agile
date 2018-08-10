@@ -29,6 +29,7 @@ namespace UI
             new RenameFileLocalActionUI(),
             new SelectMultipleTestUI(),
             new CopyDirectoryUI(),
+            new SearchFileLocalUI(),
        };
 
         public Browser()
