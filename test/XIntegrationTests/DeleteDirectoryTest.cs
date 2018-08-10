@@ -42,6 +42,26 @@ namespace XIntegrationTests
             return localSelection;
         }
 
+        internal void CreatedeepDir(FtpClient client)
+        {
+            //Make sure the test directory does not already exist
+            if (client.DirectoryExists("/Test"))
+            {
+                client.DeleteDirectory("/Test", FtpListOption.AllFiles);
+            }
+            
+            //insert files into each newly created directory
+            //for(int x = 0; x < 3; x++)
+            //{
+                client.CreateDirectory("/Test/test1");
+                client.CreateDirectory("/Test/test2");
+                client.CreateDirectory("/Test/test3");
+            //}
+            
+        }
+
+
+
         internal void RemoveDirectoryOnServer(FtpClient ftpClient, String remoteDirectory = testDirectory)
         {
             //DFtpFile remoteSelection = remoteDirectory;
@@ -80,15 +100,13 @@ namespace XIntegrationTests
             EstablishConnection();
 
             List<DFtpFile> directory = new List<DFtpFile>();
-            // Create and put 3 files on server.
-            for (int i = 0; i < 3; ++i)
-            {
-                //files.Add(CreateAndPutFileInDirectoryOnServer(client));
-                directory.Add(CreateAndPutDirectoryOnServer(client));
-            }
+
+            String Remotedir = "/Test";
+
+            CreatedeepDir(client);
 
             // Get listing of the directory
-            DFtpAction action = new GetListingRemoteAction(client, testDirectory);
+            DFtpAction action = new GetListingRemoteAction(client, Remotedir);
             DFtpResult result = action.Run();
             DFtpListResult listResult = null;
             if (result is DFtpListResult)
@@ -97,8 +115,8 @@ namespace XIntegrationTests
                 
                 var directories =  listResult.Files.Where(x => x.Type() == FtpFileSystemObjectType.Directory); //.Type() == FtpFileSystemObjectType.Directory);
                 var cnt = directories.ToList().Count;
-                Console.Write("directories:"+cnt);
-                //Assert.True(cnt == 3);
+                //Console.Write("directories:"+cnt);
+                Assert.True(cnt == 3);
             }
             
             else
@@ -106,6 +124,8 @@ namespace XIntegrationTests
                 return;
             }
             
+
+            client.DeleteDirectory("/Test", FtpListOption.AllFiles);
 
             // Check that there are three files
             //Assert.True(listResult.Equals(directory));
@@ -123,7 +143,7 @@ namespace XIntegrationTests
             //     Assert.False(SearchForFileOnServer(client, file.GetName()));
             // }
 
-            return;
+            // return;
         }
     
     }
