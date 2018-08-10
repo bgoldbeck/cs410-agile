@@ -7,7 +7,7 @@ using FluentFTP;
 namespace Actions
 {
     /// <summary>
-    /// An action for searching for a file on the remote server.
+    /// An action for searching for a file on the local server.
     /// </summary>
     public class SearchFileLocalAction : DFtpAction
     {
@@ -49,6 +49,13 @@ namespace Actions
                 new DFtpListResult(DFtpResultType.Ok, info + " [Found: " + filtered.Count + " files]", filtered) :
                 new DFtpResult(DFtpResultType.Error, info + " [No files found]");
         }
+
+        /// <summary>
+        /// Search the local server for a particular file.
+        /// </summary>
+        /// <param name="result"> stores files</param>
+        /// <param name="list">Total list</param>
+        /// <param name="isFile">checks for file</param>
 
         private void GetFilesForDirectory(String[] result, ref List<DFtpFile> list, bool isFile)
         {
