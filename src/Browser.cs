@@ -26,7 +26,6 @@ namespace UI
             new LogOffRemoteServerUI(),
             new RenameFileRemoteActionUI(),
             new RenameFileLocalActionUI(),
-            new SelectMultipleTestUI(),
             new CopyDirectoryUI(),
             new SearchFileLocalUI(),
             new SelectLocalUI(),
