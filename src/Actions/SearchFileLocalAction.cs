@@ -1,53 +1,80 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Text;
-
-using FluentFTP;
 using System.IO;
+using FluentFTP;
 
 namespace Actions
 {
     /// <summary>
-    /// An action that removes a file from the ftp server.
+    /// An action for searching for a file on the remote server.
     /// </summary>
-    /*public class SearchFileLocal : DFtpAction
+    public class SearchFileLocalAction : DFtpAction
     {
-        /// <summary>
-        /// Constructor to build an action that removes a file from the ftp server.
-        /// </summary>
-        /// <param name="ftpClient"> The client connection to the server.</param>
-        /// <param name="remoteDirectory">The remote directory path where the file to delete resides.</param>
-        /// <param name="remoteSelection">The file to remove</param>
-        public SearchFileLocal(FtpClient ftpClient, String localDirectory, DFtpFile localSelection)
-           : base(ftpClient, localDirectory, null, null, null)
+        protected String pattern;
+        protected String startPath;
+        protected bool includeSubdirectories;
+
+        public SearchFileLocalAction( String pattern, String startPath, bool includeSubdirectories = true)
+            : base(null, null, null, null, null)
         {
+            this.pattern = pattern;
+            this.startPath = startPath;
+            this.includeSubdirectories = includeSubdirectories;
         }
 
         /// <summary>
-        /// Attempt to remote the file from the FtpClient.
+        /// Run this action.
         /// </summary>
-        /// <returns>DftpResultType.Ok, if the file was removed.</returns>
+        /// <returns>The DFtpResult casted as DFtpListResult that contains the files that were found.</returns>
         public override DFtpResult Run()
-      
         {
-            Directory.GetFiles(localDirectory, "*");
+            List<DFtpFile> found = new List<DFtpFile>();
+            GetFilesForDirectory(Directory.GetFiles(this.startPath), ref found, true);
+            GetFilesForDirectory(Directory.GetFiles(this.startPath), ref found, false);
 
-            try
+            List<DFtpFile> filtered = new List<DFtpFile>();
+            foreach (DFtpFile item in found)
             {
-                // FluentFTP -- Delete me file. pls.
-                ftpClient.DeleteFile(target);
-
-                return ftpClient.FileExists(target) == false ?
-                    new DFtpResult(DFtpResultType.Ok, "File with path \"" + target + "\" removed from server.") :
-                    new DFtpResult(DFtpResultType.Error, "file with path \"" + target + "\" could not be removed from server.");
+                if (item.GetName().Contains(this.pattern))
+                {
+                    filtered.Add(item);
+                }
             }
-            catch (Exception ex)
+
+            String info = new String("Searched for pattern " + Path.DirectorySeparatorChar + pattern + Path.DirectorySeparatorChar + "on local server in"
+                + Path.DirectorySeparatorChar + startPath + Path.DirectorySeparatorChar);
+
+            return filtered.Count > 0 ?
+                new DFtpListResult(DFtpResultType.Ok, info + " [Found: " + filtered.Count + " files]", filtered) :
+                new DFtpResult(DFtpResultType.Error, info + " [No files found]");
+        }
+
+        private void GetFilesForDirectory(String[] result, ref List<DFtpFile> list, bool isFile)
+        {
+            if (result == null || result.Length == 0)
             {
-                return new DFtpResult(DFtpResultType.Error, "file with path \"" + target + "\" " +
-                    "could not be removed from server." + Environment.NewLine + ex.Message + Environment.NewLine);
+                return;
+            }
+
+            if (isFile == true)
+            {
+                foreach (String item in result)
+                {
+                    list.Add(new DFtpFile((item), FtpFileSystemObjectType.File));
+                }
+            }
+            else
+            {
+                foreach (String item in result)
+                {
+                   if (Directory.Exists(item))
+                   {
+                       GetFilesForDirectory(Directory.GetFiles(item), ref list, true);
+                       GetFilesForDirectory(Directory.GetDirectories(item), ref list, false);
+                   }
+                }
             }
         }
-        
-    }*/
-
+    }
 }
