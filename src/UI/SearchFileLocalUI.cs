@@ -15,7 +15,7 @@ namespace UI
 
         public bool RequiresLogin => true;
 
-        public bool RequiresFile => false;
+        public bool RequiresSelection => false;
 
         public bool HideForDirectory => false;
 
@@ -26,19 +26,21 @@ namespace UI
         public bool HideForRemote => true;
 
         public string MenuText => "S(e)arch in local file/directory";
-
+    
         public DFtpResult Go()
         {
             String pattern = IOHelper.AskString("What pattern to search for?");
             bool searchRecursive = IOHelper.AskBool("Include subdirectories?", "yes", "no");
 
+            //create an action and initialize with the info we have collected
             DFtpAction action = new SearchFileLocalAction(pattern, Client.localDirectory, searchRecursive);
 
             DFtpResult result = action.Run();
+            //check if the file is present in the list
             if (typeof(DFtpListResult).IsInstanceOfType(result))
             {
                 DFtpListResult listResult = (DFtpListResult)result;
-                IOHelper.Select<DFtpFile>("Search Result:", listResult.Files, true); // workaround, seems like DrawResultList is not working correctly
+                IOHelper.Select<DFtpFile>("Search Result:", listResult.Files, true); 
             } else
             {
                 bool searchAgain = IOHelper.AskBool("Unable to find any file with pattern: " + pattern + ". Do you want to search again?", "yes", "no");
