@@ -65,7 +65,7 @@ namespace XIntegrationTests
             {
                 client.DeleteDirectory(test_Dir);
             }
-            // 1. Create and put file on server.
+            // 1. Create and put file on local machine.
             DFtpFile newFile = CreateAndPutFileOnLocal(client, test_Dir, "NewFile");
 
             // 2. Search for file, make sure that it exists.
@@ -74,7 +74,7 @@ namespace XIntegrationTests
             // 3.  Delete the file
             DeleteLocalFile(client, test_Dir, newFile);
 
-            // 4. We should NOT see the file on the server anymore
+            // 4. We should NOT see the file on the local machine anymore
             Assert.False(SearchForLocalFile(test_Dir, "NewFile"));
             if (client.DirectoryExists(test_Dir))
             {
