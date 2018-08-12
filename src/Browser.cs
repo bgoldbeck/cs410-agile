@@ -30,6 +30,7 @@ namespace UI
             new SearchFileLocalUI(),
             new SelectLocalUI(),
             new GetMultipleUI(),
+            new DeleteFileLocalUI(),
        };
 
         public Browser()

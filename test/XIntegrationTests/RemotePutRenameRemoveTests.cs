@@ -40,7 +40,7 @@ namespace XIntegrationTests
             return localSelection;
         }
 
-        internal void RenameFileOnServer(FtpClient ftpClient, DFtpFile file, String newName)
+        internal void RenameFileOnServer(FtpClient ftpClient, String path, DFtpFile file, String newName)
         {
             DFtpFile remoteSelection = file;
             DFtpAction action = new RenameFileRemoteAction(ftpClient, test_Dir, remoteSelection, newName);
@@ -90,7 +90,7 @@ namespace XIntegrationTests
             Assert.True(SearchForFileOnServer(client, newFile.GetName()));
 
             // 3. Rename the file
-            RenameFileOnServer(client, newFile, "ChangedName");
+            RenameFileOnServer(client, test_Dir, newFile, "ChangedName");
 
             // 4. Search for the file by its new name
             Assert.True(SearchForFileOnServer(client, "ChangedName"));
