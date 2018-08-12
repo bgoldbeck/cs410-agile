@@ -18,9 +18,11 @@ namespace UI
             new ChangeDirectoryDownUI(),
             new ChangeDirectoryUpUI(),
             new CreateDirectoryRemoteUI(),
+            new CreateDirectoryLocalUI(),
             new PutFileUI(),
             new SearchFileRemoteUI(),
             new DeleteFileRemoteUI(),
+            new DeleteFileLocalUI(),
             new SelectRemoteUI(),
             new GetFileFromRemoteServerUI(),
             new LogOffRemoteServerUI(),
@@ -30,7 +32,6 @@ namespace UI
             new SearchFileLocalUI(),
             new SelectLocalUI(),
             new GetMultipleUI(),
-            new DeleteFileLocalUI(),
        };
 
         public Browser()
