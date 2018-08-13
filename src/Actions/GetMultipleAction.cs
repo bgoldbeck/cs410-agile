@@ -38,15 +38,16 @@ namespace Actions
             }
 
             int numberOfFiles = multiFiles.Count;
-         
+
             try
             { 
                 for (int i = 0; i < numberOfFiles; ++i)
                 {
-                    ftpClient.DownloadFile(localDirectory, multiFiles[i].GetFullPath());
+                    String localTarget = localDirectory + (this.isWindows() ? "\\" : "/") + multiFiles[i].GetName();
+                    ftpClient.DownloadFile(localTarget, multiFiles[i].GetFullPath());
                     
                 }
-                return new DFtpListResult(DFtpResultType.Ok, "Files are downloaded to local directory.", multiFiles);
+                return new DFtpResult(DFtpResultType.Ok, "Files are downloaded to local directory.");
             }
             
             catch (Exception ex)

@@ -14,9 +14,9 @@ namespace UI
 
         public bool RequiresLogin => true;
 
-        public bool RequiresSelection => true;
+        public bool RequiresSelection => false;
 
-        public bool HideForDirectory => true;
+        public bool HideForDirectory => false;
 
         public bool HideForFile => false;
 
@@ -38,7 +38,7 @@ namespace UI
                 List<DFtpFile> list = listResult.Files;
 
                 List<DFtpFile> selected = new List<DFtpFile>();
-                selected = IOHelper.SelectMultiple("Select multiple files to download.", list, false);
+                selected = IOHelper.SelectMultiple("Select multiple files to download!(Arrow keys navigate, spacebar selects/deselects, enter confirms the current selection.)", list, false);
 
                 DFtpAction action = new GetMultipleAction(Client.ftpClient, Client.localDirectory, selected);
 
@@ -46,13 +46,16 @@ namespace UI
                 DFtpResult result = action.Run();
 
                 // Give some feedback if successful
-                if (result != null)
+                if (result.Type == DFtpResultType.Ok )
                 {
                     IOHelper.Message("files downloaded successfully.");
-                    return new DFtpResult(DFtpResultType.Ok);
                 }
+                return result;   
             }
-            return tempResult;
+            else
+            {
+                return new DFtpResult(DFtpResultType.Error, "Error on downloading multiple files.");
+            }
         }
     }
 }
