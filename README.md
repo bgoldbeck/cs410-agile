@@ -1,4 +1,5 @@
 # Dumb FTP Client #
+Travis CI [![Build Status](https://travis-ci.org/bgoldbeck/cs410-agile.svg?branch=master)](https://travis-ci.org/bgoldbeck/cs410-agile)
 
 A text-mode FTP client for the Portland State University CS410 Agile class taught by Chris Gilmore over the summer of 2018.
 
