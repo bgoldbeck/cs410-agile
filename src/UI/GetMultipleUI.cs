@@ -31,30 +31,39 @@ namespace UI
             // Get listing for remote directory
             DFtpAction getListingAction = new GetListingRemoteAction(Client.ftpClient, Client.remoteDirectory);
             DFtpResult tempResult = getListingAction.Run();
-            DFtpListResult listResult = null;
-            if (tempResult is DFtpListResult)
-            {
-                listResult = (DFtpListResult)tempResult;
-                List<DFtpFile> list = listResult.Files;
-
-                List<DFtpFile> selected = new List<DFtpFile>();
-                selected = IOHelper.SelectMultiple("Select multiple files to download!(Arrow keys navigate, spacebar selects/deselects, enter confirms the current selection.)", list, false);
-
-                DFtpAction action = new GetMultipleAction(Client.ftpClient, Client.localDirectory, selected);
-
-                // Carry out the action and get the result
-                DFtpResult result = action.Run();
-
-                // Give some feedback if successful
-                if (result.Type == DFtpResultType.Ok )
+            if(tempResult.Type == DFtpResultType.Ok)
+            {  
+                DFtpListResult listResult = null;
+                if (tempResult is DFtpListResult)
                 {
-                    IOHelper.Message("files downloaded successfully.");
+                    listResult = (DFtpListResult)tempResult;
+                    List<DFtpFile> list = listResult.Files;
+
+                    List<DFtpFile> selected = new List<DFtpFile>();
+                    selected = IOHelper.SelectMultiple("Select multiple files to download!(Arrow keys navigate, spacebar selects/deselects, enter confirms the current selection.)", list, false);
+
+                    DFtpAction action = new GetMultipleAction(Client.ftpClient, Client.localDirectory, selected);
+
+                    // Carry out the action and get the result
+                    DFtpResult result = action.Run();
+
+                    // Give some feedback if successful
+                    if (result.Type == DFtpResultType.Ok)
+                    {
+                        IOHelper.Message("files downloaded successfully.");
+                    }
+                    return result;
                 }
-                return result;   
+                else
+                {
+                    return new DFtpResult(DFtpResultType.Error, "Error on the operation.");
+                }
             }
+                
+                
             else
             {
-                return new DFtpResult(DFtpResultType.Error, "Error on downloading multiple files.");
+                return new DFtpResult(DFtpResultType.Error, "Error on the operation.");
             }
         }
     }

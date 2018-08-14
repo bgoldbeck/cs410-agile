@@ -40,12 +40,11 @@ namespace Actions
             int numberOfFiles = multiFiles.Count;
 
             try
-            { 
+            {
                 for (int i = 0; i < numberOfFiles; ++i)
                 {
                     String localTarget = localDirectory + (this.isWindows() ? "\\" : "/") + multiFiles[i].GetName();
                     ftpClient.DownloadFile(localTarget, multiFiles[i].GetFullPath());
-                    
                 }
                 return new DFtpResult(DFtpResultType.Ok, "Files are downloaded to local directory.");
             }
