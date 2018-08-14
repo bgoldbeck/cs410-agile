@@ -10,7 +10,7 @@ namespace UI
     public class PutMultipleUI : IDFtpUI
     {
 
-        public ConsoleKey Key => ConsoleKey.U;
+        public ConsoleKey Key => ConsoleKey.M;
 
         public bool RequiresLogin => true;
 
@@ -24,7 +24,7 @@ namespace UI
 
         public bool HideForRemote => true;
 
-        public string MenuText => "(U)pload Multiple Files to Remote Server";
+        public string MenuText => "Upload (M)ultiple Files to Remote Server";
 
         public DFtpResult Go()
         {
