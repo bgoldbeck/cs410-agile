@@ -32,6 +32,7 @@ namespace UI
             new SearchFileLocalUI(),
             new SelectLocalUI(),
             new GetMultipleUI(),
+            new PutMultipleUI(),
        };
 
         public Browser()
