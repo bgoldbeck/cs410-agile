@@ -41,7 +41,7 @@ namespace UI
             // Get listing for current directory
             if (Client.state == ClientState.VIEWING_REMOTE)
             {
-                DFtpAction getListingAction = new GetListingRemoteAction(Client.ftpClient, Client.remoteDirectory);
+                DFtpAction getListingAction = new GetListingRemoteAction(Client.ftpClient, Client.remoteDirectory,Client.view_hidden);
                 DFtpResult tempResult = getListingAction.Run();
                 DFtpListResult listResult = null;
                 if (tempResult is DFtpListResult)
@@ -67,7 +67,7 @@ namespace UI
             else if(Client.state == ClientState.VIEWING_LOCAL)
             {
                 // Get listing for current directory
-                DFtpAction action = new GetListingLocalAction(Client.localDirectory);
+                DFtpAction action = new GetListingLocalAction(Client.localDirectory,Client.view_hidden);
                 DFtpResult result = action.Run();
                 DFtpListResult listResult = null;
                 if (result is DFtpListResult)

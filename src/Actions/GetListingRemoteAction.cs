@@ -8,19 +8,31 @@ namespace Actions
 {
     public class GetListingRemoteAction : DFtpAction
     {
-        public GetListingRemoteAction(FtpClient ftpClient, String targetDirectory) : 
+        protected bool view_hidden;
+        public GetListingRemoteAction(FtpClient ftpClient, String targetDirectory, bool view_hidden) : 
             base(ftpClient, null, null, targetDirectory, null)
         {
+            this.view_hidden = view_hidden;
         }
 
         public override DFtpResult Run()
         {
             try
             {
-                List<DFtpFile> dFtpListing = new List<DFtpFile>();
-                FtpListItem[] fluentListing = ftpClient.GetListing(remoteDirectory, FtpListOption.AllFiles);
-                PopulateList(fluentListing, ref dFtpListing);
-                return new DFtpListResult(DFtpResultType.Ok, "Got listing for " + remoteDirectory, dFtpListing);
+                if (view_hidden == true)
+                {
+                    List<DFtpFile> dFtpListing = new List<DFtpFile>();
+                    FtpListItem[] fluentListing = ftpClient.GetListing(remoteDirectory, FtpListOption.AllFiles);
+                    PopulateList(fluentListing, ref dFtpListing);
+                    return new DFtpListResult(DFtpResultType.Ok, "Got listing for " + remoteDirectory, dFtpListing);
+                }
+                else
+                {
+                    List<DFtpFile> dFtpListing = new List<DFtpFile>();
+                    FtpListItem[] fluentListing = ftpClient.GetListing(remoteDirectory);
+                    PopulateList(fluentListing, ref dFtpListing);
+                    return new DFtpListResult(DFtpResultType.Ok, "Got listing for " + remoteDirectory, dFtpListing);
+                }
             }
             catch (Exception ex)
             {

@@ -29,7 +29,7 @@ namespace UI
         public DFtpResult Go()
         {
             // Get listing for remote directory
-            DFtpAction getListingAction = new GetListingRemoteAction(Client.ftpClient, Client.remoteDirectory);
+            DFtpAction getListingAction = new GetListingRemoteAction(Client.ftpClient, Client.remoteDirectory,Client.view_hidden);
             DFtpResult tempResult = getListingAction.Run();
             DFtpListResult listResult = null;
             if (tempResult is DFtpListResult)

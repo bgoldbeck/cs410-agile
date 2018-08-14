@@ -76,7 +76,7 @@ namespace XIntegrationTests
         {
             //DFtpFile remoteSelection = file;
 
-            DFtpAction action = new GetListingRemoteAction(ftpClient, remoteDirectory);
+            DFtpAction action = new GetListingRemoteAction(ftpClient, remoteDirectory, true);
 
             DFtpResult result = action.Run();
             return;
@@ -106,7 +106,7 @@ namespace XIntegrationTests
             CreatedeepDir(client);
 
             // Get listing of the directory
-            DFtpAction action = new GetListingRemoteAction(client, Remotedir);
+            DFtpAction action = new GetListingRemoteAction(client, Remotedir, true);
             DFtpResult result = action.Run();
             DFtpListResult listResult = null;
             if (result is DFtpListResult)
