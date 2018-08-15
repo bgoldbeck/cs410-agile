@@ -68,7 +68,7 @@ namespace XIntegrationTests
             DFtpResult result = action.Run();
 
             return result.Type == DFtpResultType.Ok ? true : false;
-        }
+        } 
 
         [Fact]
         public void GetListingRemoteTest()
