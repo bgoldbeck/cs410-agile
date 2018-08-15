@@ -30,7 +30,7 @@ namespace UI
         {
             // Create the action
             // Initialize it with the info we've collected
-            DFtpAction action = new DeleteFileLocalAction(Client.ftpClient, Client.localDirectory, Client.localSelection);
+            DFtpAction action = new DeleteFileLocalAction(Client.localSelection);
 
             // Carry out the action and get the result
             DFtpResult result = action.Run();

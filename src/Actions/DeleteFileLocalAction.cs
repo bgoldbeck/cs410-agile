@@ -18,8 +18,8 @@ namespace Actions
         /// <param name="ftpClient"> The client connection to the server.</param>
         /// <param name="localDirectory">The local directory path where the file to delete resides.</param>
         /// <param name="localSelection">The file to remove</param>
-        public DeleteFileLocalAction(FtpClient ftpClient, String localDirectory, DFtpFile localSelection)
-            : base(ftpClient, localDirectory, localSelection, null, null)
+        public DeleteFileLocalAction(DFtpFile localSelection)
+            : base(null, null, localSelection, null, null)
         {
         }
 
@@ -29,7 +29,7 @@ namespace Actions
         /// <returns>DftpResultType.Ok, if the file was removed.</returns>
         public override DFtpResult Run()
         {
-            String target = localDirectory + Path.DirectorySeparatorChar + localSelection.GetName();
+            String target = localSelection.GetFullPath();
             
             try
             { 

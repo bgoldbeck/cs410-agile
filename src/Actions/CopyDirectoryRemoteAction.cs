@@ -89,9 +89,13 @@ namespace Actions
                 //If the file is a directory call this function recursively on said directory
                 if(_file.Type == FtpFileSystemObjectType.Directory)
                 {
+                    //Set the file path for the new directory
                     String newPath = path + "/" + _file.Name;
+                    //Create the directory
                     ftpClient.CreateDirectory(newPath);
+                    //Get the listing from the original version of this directory
                     FtpListItem[] fluentListing = ftpClient.GetListing(_file.FullName, FtpListOption.AllFiles);
+                    //Copy the files in this directory
                     Copy_recursive(fluentListing, newPath,localPath);
                 }
                 //if the file type is file then download the file then reupload it in the new directory

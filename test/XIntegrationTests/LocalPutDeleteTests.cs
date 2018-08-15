@@ -12,7 +12,7 @@ namespace XIntegrationTests
     public class LocalPutDeleteTests
     {
         private static FtpClient client = null;
-        private static string test_Dir = "/Test1";
+        private static string test_Dir = "local_put_delete_tests";
         internal FtpClient EstablishConnection()
         {
             if (client == null)
@@ -29,30 +29,26 @@ namespace XIntegrationTests
         internal void CreateAndPutFileOnLocal(String path, String originalName)
         {
             Directory.CreateDirectory(path);
-            File.Create(path + "/" + originalName);
+            File.Create(path + Path.DirectorySeparatorChar + originalName);
         }
 
-        internal DFtpFile CreateAndPutFileOnLocal(FtpClient ftpClient, String filePath, String newFileName)
+        internal DFtpFile CreateFileOnLocal()
         {
-            DFtpFile localSelection = new DFtpFile(filePath + "/" + newFileName, FtpFileSystemObjectType.File, newFileName);
-            Directory.CreateDirectory(filePath);
-            FileStream newStream = File.Create(filePath + "/" + newFileName);
-            newStream.Close();
-
-            return localSelection;
+            DFtpFile tempFile = new DFtpFile(Path.GetTempFileName(),FtpFileSystemObjectType.File);
+            return tempFile;
         }
 
-        internal bool SearchForLocalFile(String path, String filename)
+        internal bool SearchForLocalFile(String fullPath)
         {
-            if (File.Exists(path + "/" + filename)) {
+            if (File.Exists(fullPath)) {
                 return true;
             }
             else { return false; }
         }
 
-        internal void DeleteLocalFile(FtpClient ftpClient, String path, DFtpFile localSelection)
+        internal void DeleteLocalFile(DFtpFile localSelection)
         {
-            DFtpAction action = new DeleteFileLocalAction(ftpClient, test_Dir, localSelection);
+            DFtpAction action = new DeleteFileLocalAction(localSelection);
             DFtpResult result = action.Run();
             return;
         }
@@ -60,26 +56,18 @@ namespace XIntegrationTests
         [Fact]
         public void CreatePutDeleteTest()
         {
-            EstablishConnection();
-            if (client.DirectoryExists(test_Dir))
-            {
-                client.DeleteDirectory(test_Dir);
-            }
             // 1. Create and put file on local machine.
-            DFtpFile newFile = CreateAndPutFileOnLocal(client, test_Dir, "NewFile");
+            DFtpFile tempFile = CreateFileOnLocal();
 
             // 2. Search for file, make sure that it exists.
-            Assert.True(SearchForLocalFile(test_Dir, "NewFile"));
+            Assert.True(SearchForLocalFile(tempFile.GetFullPath()));
 
             // 3.  Delete the file
-            DeleteLocalFile(client, test_Dir, newFile);
+            DeleteLocalFile(tempFile);
 
             // 4. We should NOT see the file on the local machine anymore
-            Assert.False(SearchForLocalFile(test_Dir, "NewFile"));
-            if (client.DirectoryExists(test_Dir))
-            {
-                client.DeleteDirectory(test_Dir);
-            }
+            Assert.False(SearchForLocalFile(tempFile.GetFullPath()));
+            
             return;
         }
     }
