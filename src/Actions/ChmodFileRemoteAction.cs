@@ -16,7 +16,6 @@ namespace Actions
         /// Constructor to build an action that changes the permissions of a file on the ftp server.
         /// </summary>
         /// <param name="ftpClient"> The client connection to the server.</param>
-        /// <param name="remoteDirectory">The remote directory path where the file to be modified resides.</param>
         /// <param name="remoteSelection">The file to be modified</param>
         /// <param name="permissions">Permissions to be changed to in chmod format</param>
 
@@ -34,21 +33,12 @@ namespace Actions
 
         public override DFtpResult Run()
         {
-            String path = remoteDirectory + "/" + remoteSelection;
+            String path = remoteDirectory + "/" + remoteSelection.GetName();
 
             try
             {
-                //ftpClient.Chmod(path, permissions);
-                //int result = ftpClient.GetChmod(path);
-                int result = 0;
-                if (result == permissions)
-                {
+                ftpClient.Chmod(path, permissions);
                     return new DFtpResult(DFtpResultType.Ok, "File " + remoteSelection + " permissions have been changed.");
-                }
-                else
-                {
-                    return new DFtpResult(DFtpResultType.Error, "File " + remoteSelection + " permissions could not be changed.");
-                }
             }
             catch (Exception ex)
             {
