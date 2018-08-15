@@ -30,7 +30,7 @@ namespace UI
         public DFtpResult Go()
         {
             // Get listing for remote directory
-            DFtpAction getListingAction = new GetListingLocalAction(Client.localDirectory);
+            DFtpAction getListingAction = new GetListingLocalAction(Client.localDirectory, Client.view_hidden);
             DFtpResult tempResult = getListingAction.Run();
             DFtpListResult listResult = null;
             if (tempResult is DFtpListResult)

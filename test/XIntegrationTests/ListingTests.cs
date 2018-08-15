@@ -86,7 +86,7 @@ namespace XIntegrationTests
             }
 
             // Get listing of the directory
-            DFtpAction action = new GetListingRemoteAction(client, testDirectory);
+            DFtpAction action = new GetListingRemoteAction(client, testDirectory,true);
             DFtpResult result = action.Run();
             DFtpListResult listResult = null;
             if (result is DFtpListResult)
@@ -120,7 +120,7 @@ namespace XIntegrationTests
         [Fact]
         public void GetListingLocal()
         {
-            DFtpAction action = new GetListingLocalAction(LocalTestDirectory);
+            DFtpAction action = new GetListingLocalAction(LocalTestDirectory,true);
             DFtpResult result = action.Run();
             DFtpListResult lresult = null;
             if (result is DFtpListResult)

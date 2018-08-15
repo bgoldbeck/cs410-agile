@@ -11,6 +11,7 @@ public enum ClientState { VIEWING_LOCAL, VIEWING_REMOTE, COUNT };
 public class Client
 {
     public static ClientState state = ClientState.VIEWING_LOCAL;
+    public static bool view_hidden = false;
     public static long idleTime = 0;
 
     public static String serverName = null;

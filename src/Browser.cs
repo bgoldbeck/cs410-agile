@@ -33,6 +33,7 @@ namespace UI
             new SelectLocalUI(),
             new GetMultipleUI(),
             new PutMultipleUI(),
+            new ViewHiddenUI(),
        };
 
         public Browser()
@@ -129,13 +130,13 @@ namespace UI
             DFtpAction action = null;
             if (Client.state == ClientState.VIEWING_LOCAL)
             {
-                ConsoleUI.WriteLine("Listing for: " + Client.localDirectory, Color.Gold);
-                action = new GetListingLocalAction(Client.localDirectory);
+                ConsoleUI.WriteLine("(Show hidden = " + Client.view_hidden + ") " + "Listing for: " + Client.localDirectory, Color.Gold);
+                action = new GetListingLocalAction(Client.localDirectory,Client.view_hidden);
             }
             else if (Client.state == ClientState.VIEWING_REMOTE)
             {
-                ConsoleUI.WriteLine("Listing for: " + Client.remoteDirectory, Color.Gold);
-                action = new GetListingRemoteAction(Client.ftpClient, Client.remoteDirectory);
+                ConsoleUI.WriteLine("(Show hidden = " + Client.view_hidden + ") " + "Listing for: " + Client.remoteDirectory, Color.Gold);
+                action = new GetListingRemoteAction(Client.ftpClient, Client.remoteDirectory,Client.view_hidden);
             }
             result = action.Run();
 
