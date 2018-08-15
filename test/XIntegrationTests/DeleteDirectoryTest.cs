@@ -114,6 +114,7 @@ namespace XIntegrationTests
                 listResult = (DFtpListResult)result;
                 
                 var directories =  listResult.Files.Where(x => x.Type() == FtpFileSystemObjectType.Directory); //.Type() == FtpFileSystemObjectType.Directory);
+
                 var cnt = directories.ToList().Count;
                 //Console.Write("directories:"+cnt);
                 Assert.True(cnt == 3);
