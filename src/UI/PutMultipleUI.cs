@@ -4,6 +4,8 @@ using System.Text;
 using System.IO;
 using Actions;
 using IO;
+using System.Linq;
+using FluentFTP;
 
 namespace UI
 {
@@ -37,8 +39,7 @@ namespace UI
                 if (tempResult is DFtpListResult)
                 {
                     listResult = (DFtpListResult)tempResult;
-                    List<DFtpFile> list = listResult.Files;
-
+                    List<DFtpFile> list = listResult.Files.Where(x => x.Type() == FtpFileSystemObjectType.File).ToList();
                     List<DFtpFile> selected = new List<DFtpFile>();
                     selected = IOHelper.SelectMultiple("Select multiple files to upload!(Arrow keys navigate, spacebar selects/deselects, enter confirms the current selection.)", list, false);
 

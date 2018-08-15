@@ -4,6 +4,8 @@ using System.Text;
 using System.IO;
 using Actions;
 using IO;
+using System.Linq;
+using FluentFTP;
 
 namespace UI
 {
@@ -28,6 +30,7 @@ namespace UI
 
         public DFtpResult Go()
         {
+            
             // Get listing for remote directory
             DFtpAction getListingAction = new GetListingRemoteAction(Client.ftpClient, Client.remoteDirectory);
             DFtpResult tempResult = getListingAction.Run();
@@ -37,8 +40,8 @@ namespace UI
                 if (tempResult is DFtpListResult)
                 {
                     listResult = (DFtpListResult)tempResult;
-                    List<DFtpFile> list = listResult.Files;
-
+                    List<DFtpFile> list = listResult.Files.Where(x => x.Type() == FtpFileSystemObjectType.File).ToList();
+                    
                     List<DFtpFile> selected = new List<DFtpFile>();
                     selected = IOHelper.SelectMultiple("Select multiple files to download!(Arrow keys navigate, spacebar selects/deselects, enter confirms the current selection.)", list, false);
 
