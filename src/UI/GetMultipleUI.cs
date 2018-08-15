@@ -45,6 +45,12 @@ namespace UI
                     List<DFtpFile> selected = new List<DFtpFile>();
                     selected = IOHelper.SelectMultiple("Select multiple files to download!(Arrow keys navigate, spacebar selects/deselects, enter confirms the current selection.)", list, false);
 
+                    if (selected.Count == 0)
+                    {
+                        IOHelper.Message("No files selected.");
+                        return new DFtpResult(DFtpResultType.Ok);
+                    }
+
                     DFtpAction action = new GetMultipleAction(Client.ftpClient, Client.localDirectory, selected);
 
                     // Carry out the action and get the result

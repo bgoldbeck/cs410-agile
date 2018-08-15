@@ -43,6 +43,10 @@ namespace UI
                     Client.localSelection = selected;
                     return new DFtpResult(DFtpResultType.Ok, "Selected file/dir '" + Client.remoteSelection + "'.");
                 }
+                else
+                {
+                    return new DFtpResult(DFtpResultType.Ok, "Cancelled");
+                }
             }
             return tempResult;
         }

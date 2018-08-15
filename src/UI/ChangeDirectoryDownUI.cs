@@ -61,6 +61,10 @@ namespace UI
                         Client.remoteDirectory = selection.GetFullPath();
                         return new DFtpResult(DFtpResultType.Ok, "Changed to directory '" + Client.remoteDirectory + "'.");
                     }
+                    else
+                    {
+                        return new DFtpResult(DFtpResultType.Ok, "Cancelled");
+                    }
                 }
                 return tempResult;
             }
@@ -100,6 +104,10 @@ namespace UI
                             Client.localDirectory = Client.localDirectory + "/" + selection;
                         }
                         return new DFtpResult(DFtpResultType.Ok, "Changed to directory '" + Client.localDirectory + "'.");
+                    }
+                    else
+                    {
+                        return new DFtpResult(DFtpResultType.Ok, "Cancelled");
                     }
                 }
                 return result;
