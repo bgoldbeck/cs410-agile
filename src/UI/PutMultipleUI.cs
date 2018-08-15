@@ -43,6 +43,12 @@ namespace UI
                     List<DFtpFile> selected = new List<DFtpFile>();
                     selected = IOHelper.SelectMultiple("Select multiple files to upload!(Arrow keys navigate, spacebar selects/deselects, enter confirms the current selection.)", list, false);
 
+                    if (selected.Count == 0)
+                    {
+                        IOHelper.Message("No files selected.");
+                        return new DFtpResult(DFtpResultType.Ok);
+                    }
+
                     DFtpAction action = new PutMultipleAction(Client.ftpClient, selected, Client.remoteDirectory, true);
 
                     // Carry out the action and get the result

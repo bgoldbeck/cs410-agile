@@ -367,6 +367,10 @@ namespace IO
                 }
             } while (input.Key != ConsoleKey.Enter && input.Key != ConsoleKey.Escape);
 
+            // If user hit Escape, return default (usually null).
+            if (input.Key == ConsoleKey.Escape)
+                return default(T);
+
             return list[selected];
         }
 
