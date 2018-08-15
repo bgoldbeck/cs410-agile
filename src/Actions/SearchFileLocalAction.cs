@@ -29,16 +29,21 @@ namespace Actions
         /// <returns>The DFtpResult casted as DFtpListResult that contains the files that were found.</returns>
         public override DFtpResult Run()
         {
-            List<DFtpFile> found = new List<DFtpFile>();
+            List<String> found = new List<String>();
+
             GetFilesForDirectory(Directory.GetFiles(this.startPath), ref found, true);
-            GetFilesForDirectory(Directory.GetDirectories(this.startPath), ref found, false);
+            if (this.includeSubdirectories)
+            {
+                GetFilesForDirectory(Directory.GetDirectories(this.startPath), ref found, false);
+            }
 
             List<DFtpFile> filtered = new List<DFtpFile>();
-            foreach (DFtpFile item in found)
+            foreach (String item in found)
             {
-                if (item.GetName().Contains(this.pattern))
+                if (item.Contains(this.pattern))
                 {
-                    filtered.Add(item);
+                    DFtpFile file = new DFtpFile(item, FtpFileSystemObjectType.File);
+                    filtered.Add(file);
                 }
             }
 
@@ -57,7 +62,7 @@ namespace Actions
         /// <param name="list">Total list</param>
         /// <param name="isFile">checks for file</param>
 
-        private void GetFilesForDirectory(String[] result, ref List<DFtpFile> list, bool isFile)
+        private void GetFilesForDirectory(String[] result, ref List<String> list, bool isFile)
         {
             if (result == null || result.Length == 0)
             {
@@ -68,7 +73,7 @@ namespace Actions
             {
                 foreach (String item in result)
                 {
-                    list.Add(new DFtpFile((item), FtpFileSystemObjectType.File));
+                    list.Add(item);
                 }
             }
             else
