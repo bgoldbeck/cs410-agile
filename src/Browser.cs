@@ -34,6 +34,7 @@ namespace UI
             new GetMultipleUI(),
             new PutMultipleUI(),
             new ViewHiddenUI(),
+            new ChmodFileRemoteUI(),
        };
 
         public Browser()
