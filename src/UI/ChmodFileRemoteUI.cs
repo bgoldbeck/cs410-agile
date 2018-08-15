@@ -12,7 +12,7 @@ namespace UI
 
         public bool RequiresLogin => true;
 
-        public bool RequiresSelection => false;
+        public bool RequiresSelection => true;
 
         public bool HideForDirectory => true;
 
@@ -26,25 +26,56 @@ namespace UI
 
         public DFtpResult Go()
         {
-            int permissions;
             try
             {
-                permissions = IOHelper.AskInt("Enter new permissions in chmod format (e.g. 730): ");
-
-                // Create the action, Initialize it with the info we've collected
-                DFtpAction action = new ChmodFileRemoteAction(Client.ftpClient, Client.remoteDirectory, Client.remoteSelection, permissions);
-
-                // Carry out the action and get the result
-                DFtpResult result = action.Run();
-
-                // Give some feedback if successful
-                if (result.Type == DFtpResultType.Ok)
+                bool valid = true;
+                int permissions = IOHelper.AskInt("Enter new permissions in chmod format (e.g. 730): ");
+                String permString = permissions.ToString();
+                if(permString.Length != 3)
                 {
-                    IOHelper.Message("Permissions for this file were changed to " + permissions + ".");
+                    IOHelper.Message("Permission must be 3 digits long.");
+                    valid = false;
                 }
-                // Return the result after running.
+                foreach (char c in permString)
+                {
+                    switch(c)
+                    {
+                        case '0':
+                        case '1':
+                        case '2':
+                        case '4':
+                        case '3':
+                        case '5':
+                        case '6':
+                        case '7':
+                            break;
+                        default:
+                            IOHelper.Message("Permission must be in chmod format.");
+                            valid = false;
+                            break;
+                    }
+                }
 
-                return result;
+                if (valid)
+                {
+                    // Create the action, Initialize it with the info we've collected
+                    DFtpAction action = new ChmodFileRemoteAction(Client.ftpClient, Client.remoteDirectory, Client.remoteSelection, permissions);
+
+                    // Carry out the action and get the result
+                    DFtpResult result = action.Run();
+                    // Give some feedback if successful
+                    if (result.Type == DFtpResultType.Ok)
+                    {
+                        IOHelper.Message("Permissions for this file were changed to " + permissions + ".");
+                    }
+                    // Return the result after running.
+
+                    return result;
+                }
+                else
+                {
+                    return new DFtpResult(DFtpResultType.Error, "Permission input was invalid");
+                }
             }
 
             catch (Exception ex)
